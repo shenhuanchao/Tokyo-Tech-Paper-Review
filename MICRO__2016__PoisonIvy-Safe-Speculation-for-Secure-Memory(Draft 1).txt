@@ -1,0 +1,23 @@
+# Huanchao Shen (2021-01-07)
+
+# Paper information
+- Title: PoisonIvy: Safe Speculation for Secure Memory 
+- Authors: Tamara Silbergleit Lehman, Andrew D. Hilton, Benjamin C. Lee 
+- Venue: MICRO 2016
+- Keywords: speculation, poison, epoch, confidentiality, integrity, performance
+
+# Paper content
+## Summary
+Speculation is the practice of allowing unverified data in computations prior to verifying its metadata to ensure its integrity. Though effective in reducing performance overheads, speculation is rarely adopted in the industry due to its nature of trading security for efficiency. In this paper, the authors introduce PoisonIvy —— a “safe speculation” that inherits the benefits of speculation without compromising chip security. Similar to the concept of dirty bits, PoisonIvy utilizes “poison bits” to track all data and addresses that are contaminated by unverified inputs. At a low performance overhead of 1.8%, PoisonIvy is able to ensure security at the same time since all speculative data is trapped in the chip until successful verification.
+
+## Strengths
+When addressing the tension between performance and security, the authors did not stop at ideal situations where verifications are completed in time. After establishing the effectiveness of “poisoned values” hierarchies in countering physical attacks, the authors acknowledge how maintaining the data structure may jeopardize efficiency as the processor will simply halt and wait for verification should the number of “poisoned states” reach maximum capacity. The 2-bit epoch-based structure is then introduced to segment data into manageable supply and verification blocks to deal with long and uniform memory accesses. By iteratively evaluating the security and performance aspect of PoisonIvy, the authors ensure that their approach remains justifiable under various scenarios.
+
+## Weaknesses
+It’s pointed out that existing OTP encryption is vulnerable to side-channel attacks because of its bit-to-bit mapping nature.  In response to potential counterclaims on how adopting other encryption algorithms can also permit safe speculation, the authors point out that XTS-mode encryption penalizes performance while diffusive ciphers merely lower the odds of successful attacks. This is a false dilemma fallacy as it’s implied that the aforementioned encryption methods are the only viable options. Should there be a safer encryption algorithm with low-enough overheads, it may also lead to safe speculation without the hassle of altering the lowest level infrastructure and the overheads of maintaining extra data structures.
+
+## Thoughts
+Like how the paper attempts to address the seemingly unavoidable conflict between performance and security due to the nature of speculation, I wonder if encryption algorithms can witness a similar optimization in order to counter side-channel attacks during speculation. As mentioned by the authors, widely employed algorithms either fail to solve the problem from its root (diffusion) or drastically damages performance (XTS). Maybe there can be a nice compromise between the randomness in the number of bits altered and performance overheads so that the problem may also be addressed at an algorithmic level. 
+
+## Takeaways and questions
+The biggest takeaway I get from this paper is the approach of adopting performance-enhancing concepts followed by patching its vulnerabilities. Ideally, one can retain both security and performance should he/she address all the resulting security threats. It’s worth noting, though, that the vulnerabilities we conceive of today are likely limited by the current technology. In the context of speculation, should unverified computation itself become exploitable, the performance boost may no-longer justify the risks taken. Therefore before attempting such an approach, we must carefully examine our key assumptions so that the benefits won’t be overwhelmed by the negative side-effects in the foreseeable future.
